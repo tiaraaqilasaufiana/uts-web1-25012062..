@@ -25,8 +25,8 @@ require __DIR__ . '/includes/header.php';
 <section class="panel">
     <h2>Selamat Datang di Kantin Kampus</h2>
     <p>
-        Silakan cari makanan atau minuman yang ingin
-        dipesan dari daftar menu kantin kampus.
+        Silakan cari makanan atau minuman yang ingin dipesan
+        dari daftar menu kantin kampus.
     </p>
 </section>
 
@@ -72,6 +72,7 @@ require __DIR__ . '/includes/header.php';
                         <th>Nama Menu</th>
                         <th>Kategori</th>
                         <th>Harga</th>
+                        <th>Jumlah dan Pesan</th>
                     </tr>
                 </thead>
 
@@ -82,6 +83,44 @@ require __DIR__ . '/includes/header.php';
                             <td><?= e($item['nama']) ?></td>
                             <td><?= e($item['kategori']) ?></td>
                             <td><?= e(rupiah($item['harga'])) ?></td>
+                            <td>
+                                <form
+                                    method="post"
+                                    action="proses.php"
+                                >
+                                    <input
+                                        type="hidden"
+                                        name="aksi"
+                                        value="tambah"
+                                    >
+
+                                    <input
+                                        type="hidden"
+                                        name="kode"
+                                        value="<?= e($item['kode']) ?>"
+                                    >
+
+                                    <label
+                                        for="jumlah-<?= e($item['kode']) ?>"
+                                    >
+                                        Jumlah
+                                    </label>
+
+                                    <input
+                                        id="jumlah-<?= e($item['kode']) ?>"
+                                        type="number"
+                                        name="jumlah"
+                                        min="1"
+                                        max="10"
+                                        step="1"
+                                        required
+                                    >
+
+                                    <button type="submit">
+                                        Tambah
+                                    </button>
+                                </form>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
