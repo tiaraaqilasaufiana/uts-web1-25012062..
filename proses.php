@@ -3,6 +3,7 @@
 require_once __DIR__ . '/includes/fungsi.php';
 require_once __DIR__ . '/data/menu.php';
 
+// Hanya menerima request POST.
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     redirect('index.php');
 }
@@ -15,7 +16,7 @@ if (!isset($_SESSION['keranjang']) || !is_array($_SESSION['keranjang'])) {
     $_SESSION['keranjang'] = [];
 }
 
-// Menambahkan menu ke keranjang.
+// Menambahkan menu.
 if ($aksi === 'tambah') {
     $kode = isset($_POST['kode']) && is_string($_POST['kode'])
         ? $_POST['kode']
@@ -63,7 +64,7 @@ if ($aksi === 'tambah') {
     redirect('keranjang.php');
 }
 
-// Menghapus satu menu dari keranjang.
+// Menghapus satu item.
 if ($aksi === 'hapus') {
     $kode = isset($_POST['kode']) && is_string($_POST['kode'])
         ? $_POST['kode']
