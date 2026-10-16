@@ -5,6 +5,10 @@ require_once __DIR__ . '/data/menu.php';
 
 $keranjang = $_SESSION['keranjang'] ?? [];
 
+$subtotal = hitungSubtotalKeranjang($keranjang, $menu);
+$diskon = hitungDiskon($subtotal);
+$totalAkhir = hitungTotalAkhir($subtotal);
+
 $judulHalaman = 'Keranjang Belanja';
 require __DIR__ . '/includes/header.php';
 ?>
@@ -27,6 +31,7 @@ require __DIR__ . '/includes/header.php';
                         <th>Nama Menu</th>
                         <th>Harga</th>
                         <th>Jumlah</th>
+                        <th>Subtotal Item</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -39,13 +44,21 @@ require __DIR__ . '/includes/header.php';
                         }
 
                         $data = $menu[$kode];
+
+                        $jumlah = (int) $item['jumlah'];
+
+                        $subtotalItem = hitungSubtotalItem(
+                            (int) $data['harga'],
+                            $jumlah
+                        );
                         ?>
 
                         <tr>
                             <td><?= e($kode) ?></td>
                             <td><?= e($data['nama']) ?></td>
                             <td><?= e(rupiah($data['harga'])) ?></td>
-                            <td><?= e($item['jumlah']) ?></td>
+                            <td><?= e($jumlah) ?></td>
+                            <td><?= e(rupiah($subtotalItem)) ?></td>
                             <td>
                                 <form
                                     method="post"
@@ -76,6 +89,26 @@ require __DIR__ . '/includes/header.php';
                     <?php endforeach; ?>
                 </tbody>
             </table>
+        </div>
+
+        <div class="totals">
+            <p>
+                Subtotal seluruh pesanan:
+                <strong><?= e(rupiah($subtotal)) ?></strong>
+            </p>
+
+            <p>
+                Diskon:
+                <strong><?= e(rupiah($diskon)) ?></strong>
+                <span class="muted">
+                    (10% jika subtotal minimal Rp50.000)
+                </span>
+            </p>
+
+            <p class="grand-total">
+                Total akhir:
+                <?= e(rupiah($totalAkhir)) ?>
+            </p>
         </div>
 
         <form
